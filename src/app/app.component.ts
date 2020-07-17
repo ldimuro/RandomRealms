@@ -41,32 +41,38 @@ export class AppComponent {
   rowLength = 100 // 45
   colLength = 100; // 80
   cityNums = 10;
+  structureNums = 50;
   font = 'Optima';
   canvasDim = this.rowLength * length;
 
-  // color1 = '🟦';
-  // color2 = '🟥';
-  // color3 = '🟧';
-  // color4 = '🟩';
   water = '0';
   land = '1';
   structure = '@';
-
 
   cycle = 0;
   rate = 3;
   respawnMin = 6;
   cycleNums = 100;
-  delayNum = 10;
+  delayNum = 1;
 
   ngOnInit() {
     this.ctx = this.canvas.nativeElement.getContext('2d');
-    // this.canvas.nativeElement.setAttribute('height', '550');
-    // this.canvas.nativeElement.setAttribute('width', '550');
-
 
     this.reset();
+  }
 
+  randomize() {
+    for (let i = 0; i < 5; i++) {
+      this.start();
+    }
+
+    for (let j = 0; j < this.cityNums; j++) {
+      this.addLandStructure
+    }
+
+    for (let k = 0; k < this.structureNums; k++) {
+      this.addNaturalFeature();
+    }
   }
 
   async start() {
@@ -86,6 +92,30 @@ export class AppComponent {
 
       this.renderGrid();
     }
+
+
+    // THIS IS CORRECT
+    // let grid = '';
+    // for (let x = 0; x < this.rowLength; x++) {
+    //   for (let y = 0; y < this.colLength; y++) {
+    //     // console.log(this.grid[x][y]);
+    //     grid += this.grid[x][y];
+    //   }
+    //   // console.log('\n');
+    //   grid += '\n';
+    // }
+    // console.log(grid);
+
+    // let asd = '';
+    // for (let x = 0; x < this.rowLength; x++) {
+    //   for (let y = 0; y < this.colLength; y++) {
+    //     // console.log(this.grid[x][y]);
+    //     asd += this.cells[x][y].value;
+    //   }
+    //   // console.log('\n');
+    //   asd += '\n';
+    // }
+    // console.log(asd);
   }
 
   reset() {
@@ -99,9 +129,9 @@ export class AppComponent {
         let obj = {
           x: i,
           y: j,
-          value: this.water
+          value: this.land
         }
-        this.grid[i][j] = this.water;
+        this.grid[i][j] = this.land;
         this.cells[i][j] = obj;
 
         // this.ctx.fillStyle = 'white';
@@ -118,13 +148,12 @@ export class AppComponent {
 
         this.ctx.fillStyle = desert[Math.floor(Math.random() * forest.length)];
 
-        this.ctx.clearRect(i * this.length, j * this.length, this.length, this.length)
-        this.ctx.fillRect(i * this.length, j * this.length, this.length, this.length);
+        this.ctx.clearRect(j * this.length, i * this.length, this.length, this.length)
+        this.ctx.fillRect(j * this.length, i * this.length, this.length, this.length);
       }
     }
 
-    // this.randomStartingPoint(); // set cycleNum = 500
-    this.randomOceans(); // set cycleNum = 200
+    this.randomOceans();
 
     this.renderGrid();
   }
@@ -134,8 +163,8 @@ export class AppComponent {
       for (let j = 0; j < this.colLength; j++) {
         this.grid[i][j] = this.cells[i][j].value;
 
-        if (this.cells[i][j].value !== this.water) {
-          if (this.cells[i][j].value === this.land) {
+        if (this.cells[i][j].value !== this.land) {
+          if (this.cells[i][j].value === this.water) {
             // this.ctx.fillStyle = '#6666ff';
             // this.ctx.fillStyle = '#66c2ff';
             // this.ctx.fillStyle = '#0099ff';
@@ -144,23 +173,12 @@ export class AppComponent {
 
             // this.ctx.fillStyle = '#ff6600';
           }
-          // else if (this.cells[i][j].value === this.color2) {
-          //   this.ctx.fillStyle = '#ff8080';
-          // }
-          // else if (this.cells[i][j].value === this.color3) {
-          //   this.ctx.fillStyle = '#ffc266';
-          //   // this.ctx.fillText('🟠', this.length, this.length);
-          // }
-          // else if (this.cells[i][j].value === this.color4) {
-          //   this.ctx.fillStyle = '#00e600';
-          // }
 
-          this.ctx.clearRect(i * this.length, j * this.length, this.length, this.length);
-          this.ctx.fillRect(i * this.length, j * this.length, this.length, this.length);
+          this.ctx.clearRect(j * this.length, i * this.length, this.length, this.length);
+          this.ctx.fillRect(j * this.length, i * this.length, this.length, this.length);
         }
       }
     }
-
   }
 
   traverseCells() {
@@ -177,7 +195,7 @@ export class AppComponent {
               (m + j) !== -1 &&
               (l + i) !== this.rowLength &&
               (m + j) !== this.colLength &&
-              (this.cells[l + i][m + j].value === this.land)) {
+              (this.cells[l + i][m + j].value === this.water)) {
               alive++;
             }
           }
@@ -186,10 +204,10 @@ export class AppComponent {
         let randomNum = Math.random();
 
         if ((alive === this.rate) && randomNum > 0.5) {
-          this.updateCell(this.cells[l][m].x, this.cells[l][m].y, this.land);
+          this.updateCell(this.cells[l][m].x, this.cells[l][m].y, this.water);
         }
         else if (alive >= this.respawnMin) {
-          this.updateCell(this.cells[l][m].x, this.cells[l][m].y, this.land);
+          this.updateCell(this.cells[l][m].x, this.cells[l][m].y, this.water);
         }
       }
     }
@@ -222,10 +240,11 @@ export class AppComponent {
     let name = this.generateCityName(cityNames[Math.floor(Math.random() * cityNames.length)]);
     let randomStructure = '📍';
 
-    if (this.cells[randomRow][randomCol].value === this.water && randomRow <= 85) {
+    if (this.cells[randomRow][randomCol].value === this.land && randomCol <= 85 && this.checkNeighbors(randomRow, randomCol)) {
       this.ctx.fillStyle = 'black';
       this.ctx.font = `bold ${citySizes[Math.floor(Math.random() * citySizes.length)]} ${this.font}`;
-      this.ctx.fillText(`${randomStructure}${name}`, (this.cells[randomRow][randomCol].x) * this.length, (this.cells[randomRow][randomCol].y) * this.length);
+      this.ctx.fillText(`${randomStructure}${name}`, (this.cells[randomRow][randomCol].y) * this.length, (this.cells[randomRow][randomCol].x) * this.length);
+      this.updateCell(randomRow, randomCol, this.structure);
     }
     else {
       this.addLandStructure();
@@ -241,10 +260,10 @@ export class AppComponent {
     let randomNum = Math.floor(Math.random() * waterStructures.length);
     let randomStructure = waterStructures[randomNum];
 
-    if (this.cells[randomRow][randomCol].value !== this.water) {
+    if (this.cells[randomRow][randomCol].value !== this.land) {
       this.ctx.fillStyle = 'black';
       this.ctx.font = "16px Ariel";
-      this.ctx.fillText(`${randomStructure}`, (this.cells[randomRow][randomCol].x) * this.length, (this.cells[randomRow][randomCol].y) * this.length);
+      this.ctx.fillText(`${randomStructure}`, (this.cells[randomRow][randomCol].y) * this.length, (this.cells[randomRow][randomCol].x) * this.length);
     }
     else {
       this.addWaterStructure();
@@ -264,10 +283,11 @@ export class AppComponent {
     let randomNum = Math.floor(Math.random() * natural.length);
     let randomStructure = natural[randomNum];
 
-    if (this.cells[randomRow][randomCol].value === this.water) {
+    if (this.cells[randomRow][randomCol].value === this.land) {
       this.ctx.fillStyle = 'black';
       this.ctx.font = '18px Ariel';
       this.ctx.fillText(randomStructure, (this.cells[randomRow][randomCol].x) * this.length, (this.cells[randomRow][randomCol].y) * this.length);
+      this.updateCell(randomRow, randomCol, this.structure);
     }
     else {
       this.addNaturalFeature();
@@ -334,18 +354,28 @@ export class AppComponent {
     return generatedName;
   }
 
+  checkNeighbors(x: number, y: number) {
+    for (let i = -3; i < 10; i++) {
+      for (let j = -3; j < 10; j++) {
+
+      }
+    }
+
+    return true;
+  }
+
   randomOceans() {
     try {
       for (let i = 0; i < 6; i++) {
         let randomX = Math.floor(Math.random() * this.rowLength);
         let randomY = Math.floor(Math.random() * this.colLength);
 
-        if (this.cells[randomX][randomY].value === this.water) {
-          this.updateCell(randomX, randomY, this.land);
-          this.updateCell(randomX - 1, randomY, this.land);
-          this.updateCell(randomX + 1, randomY, this.land);
-          this.updateCell(randomX, randomY - 1, this.land);
-          this.updateCell(randomX, randomY + 1, this.land);
+        if (this.cells[randomX][randomY].value === this.land) {
+          this.updateCell(randomX, randomY, this.water);
+          this.updateCell(randomX - 1, randomY, this.water);
+          this.updateCell(randomX + 1, randomY, this.water);
+          this.updateCell(randomX, randomY - 1, this.water);
+          this.updateCell(randomX, randomY + 1, this.water);
         }
       }
     }
@@ -362,16 +392,5 @@ export class AppComponent {
     link.href = image;
     link.click();
   }
-
-
-
-
-
-
-
-
-
-
-
 
 }

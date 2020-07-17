@@ -1,0 +1,42 @@
+.main {
+    // font-family: monospace;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    justify-content: center;
+    // background-color: black;
+    // color: white;
+}
+
+.col {
+    margin-top: -12px;
+}
+
+.row {
+    margin-left: -10px;
+}
+
+canvas {
+    border: 1px solid black;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+.canvasDiv {
+    text-align: center;
+}
+
+.buttons {
+    text-align: center;
+}
+
+button {
+    margin-right: 5px;
+    margin-left: 5px;
+    // background-color: transparent;
+    // border-color: white;
+    // color: white;
+}
+
+p, h1 {
+    text-align: center;
+}
