@@ -7,52 +7,155 @@
     "respawnMin": 6,
     "cycleNum": 100,
     "delayNum": 1,
+    "cityNames": [
+        "Phoenix",
+        "New York City",
+        "Los Angeles",
+        "Malibu",
+        "Chicago",
+        "Sedona",
+        "Flagstaff",
+        "San Diego",
+        "Dallas",
+        "San Francisco",
+        "Denver",
+        "Seattle",
+        "Calabasas",
+        "Houston",
+        "Fresno",
+        "Oakland",
+        "Pittsburgh",
+        "Boston",
+        "Memphis",
+        "Miami",
+        "Orlando",
+        "Boulder",
+        "Akron",
+        "San Jose",
+        "Portland",
+        "Tucson",
+        "New Orleans",
+        "Detroit",
+        "Las Vegas",
+        "Yuma",
+        "Atlanta",
+        "Cleveland"
+    ],
+    "landSynonyms": [
+        "lands",
+        "realm",
+        "country",
+        "kingdom",
+        "nation",
+        "empire",
+        "territory",
+        "commonwealth",
+        "republic"
+    ],
+    "allAdjectives": [
+        "mystic",
+        "vast",
+        "remote",
+        "hidden",
+        "secret",
+        "arcane",
+        "forgotten"
+    ],
     "terrain": {
         "forest": {
             "water": "#33D6FF",
-            "shades": {
-                "shade1": "#00BC00",
-                "shade2": "#00CC00",
-                "shade3": "#00DC00"
-            },
-            "naturalStructures": ["🌸", "🌺", "🌼", "🍄", "🌲", "🌳"],
+            "shades": [
+                "#00BC00",
+                "#00CC00",
+                "#00DC00"
+            ],
+            "naturalStructures": [
+                "🌸",
+                "🌺",
+                "🌼",
+                "🍄",
+                "🌲",
+                "🌳"
+            ],
+            "adjectives": [
+                "enchanted",
+                "lush",
+                "rich",
+                "thriving",
+                "idyllic",
+                "heavenly"
+            ],
             "structureSize": "18px",
+            "numOfStructure": 50,
             "textColor": "black"
         },
         "desert": {
             "water": "#33D6FF",
-            "shades": {
-                "shade1": "#FFE680",
-                "shade2": "#FFEB99",
-                "shade3": "#FFF0B3"
-            },
-            "naturalStructures": ["🌵", "🌴"],
+            "shades": [
+                "#FFE680",
+                "#FFEB99",
+                "#FFF0B3"
+            ],
+            "naturalStructures": [
+                "🌵",
+                "🌴"
+            ],
+            "adjectives": [
+                "scorching",
+                "lonely",
+                "barren",
+                "boiling",
+                "sweltering",
+                "dusty"
+            ],
             "structureSize": "18px",
+            "numOfStructure": 50,
             "textColor": "black"
         },
         "snow": {
             "water": "#33D6FF",
-            "shades": {
-                "shade1": "#FFFFFF",
-                "shade2": "#F2F2F2",
-                "shade3": "#E6E6E6"
-            },
-            "naturalStructures": ["🗻"],
+            "shades": [
+                "#FFFFFF",
+                "#F2F2F2",
+                "#E6E6E6"
+            ],
+            "naturalStructures": [
+                "🗻"
+            ],
+            "adjectives": [
+                "frozen",
+                "frigid",
+                "polar",
+                "icy",
+                "snowy",
+                "glacial"
+            ],
             "structureSize": "36px",
+            "numOfStructure": 20,
             "textColor": "black"
         },
         "hell": {
             "water": "#FF6600",
-            "shades": {
-                "shade1": "#404040",
-                "shade2": "#4D4D4D",
-                "shade3": "#595959"
-            },
-            "naturalStructures": ["🌋"],
+            "shades": [
+                "#404040",
+                "#4D4D4D",
+                "#595959"
+            ],
+            "naturalStructures": [
+                "🌋"
+            ],
+            "adjectives": [
+                "desolated",
+                "grim",
+                "stark",
+                "noxious",
+                "dark",
+                "dreary",
+                "sunless"
+            ],
             "structureSize": "30px",
+            "numOfStructure": 20,
             "textColor": "white"
         }
-
     }
-
 }

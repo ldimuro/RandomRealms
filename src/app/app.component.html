@@ -5,11 +5,12 @@
     </span>
   </div> -->
 
-  <h1>Random Realms</h1>
-  <p>Procedurally Generated Maps</p>
+  <h1>RANDOM REALMS</h1>
+  <h4 [hidden]="realmTitle.length === 0">{{realmTitle}}</h4>
+  <!-- <p>Procedurally Generated Maps</p> -->
 
   <div class="canvasDiv">
-    <canvas id="canvas" #canvas width="500" height="500"></canvas>
+    <canvas id="canvas" #canvas width="750" height="500"></canvas>
   </div>
 
   <br />
@@ -21,17 +22,13 @@
     <button (click)="addWaterStructure()">Add Water Stucture</button>
     <button (click)="addNaturalFeature()">Add Natural Feature</button> -->
     <button (click)="randomize()" [disabled]="disableRandomize">Randomize</button>
-    <button (click)="downloadMap()" [disabled]="disableRandomize">Download Map</button>
+    <button (click)="downloadMap()" [disabled]="disableRandomize">Download PNG</button>
 
     <!-- <p>Cycle: {{cycle}}</p> -->
+    <!-- <a href="https://twitter.com/random_realms?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-size="large"
+      data-show-screen-name="false" data-show-count="false">Follow @random_realms</a>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> -->
   </div>
-
-  
-
-
-
-
-
 
 </div>
 

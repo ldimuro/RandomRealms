@@ -1,4 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
+import * as config from './config.json';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +22,10 @@ export class AppComponent {
   - "The dark realm of Fézöda"
   - "The scorching lands of Led Ödyeânc"
 
+  - mostly water = 'scattered islands', 'nautical'
+  - mostly land = 'plains', 'steppes', 'prairies'
+  - mostly lava = 'volcanic fields'
+
   all = 'mystic', 'vast', 'remote', 'hidden', 'secret', 'arcane', 'forgotten'
   forest = 'enchanted', 'lush', 'rich', 'thriving', 'idyllic', 'heavenly', 
   desert = 'scorching', 'lonely', 'barren', 'boiling', 'sweltering', 'dusty'
@@ -32,14 +37,23 @@ export class AppComponent {
   */
 
   // Configurable Variables
-  cityNums = 10;
-  landStructureNums = 50;
-  font = 'Optima';
-  oceanSeeds = 3;
-  rate = 3;
-  respawnMin = 6;
-  cycleNums = 100;
-  delayNum = 1;
+  cityNums;
+  landStructureNums;
+  font;
+  oceanSeeds;
+  rate;
+  respawnMin;
+  cycleNums;
+  delayNum;
+  waterColor;
+  shades = [];
+  naturalStructures = [];
+  structureSize;
+  textColor;
+  cityNames = [];
+  landSynonyms = [];
+  allAdjectives = [];
+  adjectives = [];
 
   // Hardcoded Variable
   @ViewChild('canvas', { static: true })
@@ -47,24 +61,48 @@ export class AppComponent {
   ctx: CanvasRenderingContext2D;
   grid = [];
   cells = [];
+  terrain = ['forest', 'desert', 'snow', 'hell'];
   length = 5;
   rowLength = 100 // 45
-  colLength = 100; // 80
+  colLength = 150; // 80
   water = '0';
   land = '1';
   structure = '@';
   cycle = 0;
   disableRandomize = false;
+  realmName = '';
+  realmTitle = '';
+  // allAdjectives = ['mystic', 'vast', 'remote', 'hidden', 'secret', 'arcane', 'forgotten'];
 
   ngOnInit() {
     this.ctx = this.canvas.nativeElement.getContext('2d');
 
-    this.reset();
+    // Get Config data
+    this.cityNums = config['default']['cityNums'];
+    this.font = config['default']['font'];
+    this.oceanSeeds = config['default']['oceanSeeds'];
+    this.rate = config['default']['aliveRate'];
+    this.respawnMin = config['default']['respawnMin'];
+    this.cycleNums = config['default']['cycleNum'];
+    this.delayNum = config['default']['delayNum'];
+    this.cityNames = config['default']['cityNames'];
+    this.landSynonyms = config['default']['landSynonyms'];
+    this.allAdjectives = config['default']['allAdjectives'];
+
+    this.randomize();
   }
 
   async randomize() {
     this.disableRandomize = true;
+
+    // Choose random terrain and get config data
+    let randomTerrain = this.terrain[Math.floor(Math.random() * this.terrain.length)];
+    this.getConfigData(randomTerrain);
+
     this.reset();
+
+    this.realmName = this.generateCityName(this.cityNames[Math.floor(Math.random() * this.cityNames.length)]);
+    this.realmTitle = this.generateRealmTitle(this.realmName);
 
     for (let i = 0; i < 4; i++) {
       await this.start();
@@ -75,10 +113,20 @@ export class AppComponent {
     }
 
     for (let j = 0; j < this.cityNums; j++) {
-      await this.addLandStructure();
+      await this.addCity();
     }
 
     this.disableRandomize = false;
+  }
+
+  getConfigData(terrain: string) {
+    this.waterColor = config['default']['terrain'][terrain]['water'];
+    this.shades = config['default']['terrain'][terrain]['shades'];
+    this.naturalStructures = config['default']['terrain'][terrain]['naturalStructures'];
+    this.structureSize = config['default']['terrain'][terrain]['structureSize'];
+    this.landStructureNums = config['default']['terrain'][terrain]['numOfStructure'];
+    this.textColor = config['default']['terrain'][terrain]['textColor'];
+    this.adjectives = config['default']['terrain'][terrain]['adjectives'].concat(this.allAdjectives);
   }
 
   async start() {
@@ -102,6 +150,8 @@ export class AppComponent {
 
   reset() {
     this.cycle = 0;
+    this.realmName = '';
+    this.realmTitle = '';
 
     // Initialize grid
     for (let i = 0; i < this.rowLength; i++) {
@@ -124,7 +174,7 @@ export class AppComponent {
         let mars = ['#ff8000', '#ff8c1a', '#ff9933'];
         let hell = ['#404040', '#4d4d4d', '#595959'];
 
-        this.ctx.fillStyle = desert[Math.floor(Math.random() * forest.length)];
+        this.ctx.fillStyle = this.shades[Math.floor(Math.random() * this.shades.length)];
 
         this.ctx.clearRect(j * this.length, i * this.length, this.length, this.length)
         this.ctx.fillRect(j * this.length, i * this.length, this.length, this.length);
@@ -147,7 +197,7 @@ export class AppComponent {
             // this.ctx.fillStyle = '#66c2ff';
             // this.ctx.fillStyle = '#0099ff';
 
-            this.ctx.fillStyle = '#33d6ff';
+            this.ctx.fillStyle = this.waterColor;
 
             // this.ctx.fillStyle = '#ff6600';
           }
@@ -205,27 +255,24 @@ export class AppComponent {
     this.cells[x][y] = obj;
   }
 
-  addLandStructure() {
+  addCity() {
     let randomRow = Math.floor(Math.random() * this.rowLength);
     let randomCol = Math.floor(Math.random() * this.colLength);
 
     let citySizes = ['16px'];
-    let cityNames = ['Phoenix', 'New York City', 'Los Angeles', 'Malibu', 'Chicago', 'Sedona', 'Flagstaff',
-      'San Diego', 'Dallas', 'San Francisco', 'Denver', 'Seattle', 'Philadelphia', 'Houston', 'Fresno',
-      'Oakland', 'Pittsburgh', 'Boston', 'Memphis', 'Miami', 'Orlando', 'Boulder', 'Akron', 'San Jose',
-      'Portland', 'Tucson', 'New Orleans', 'Detroit', 'Las Vegas', 'Yuma', 'Atlanta', 'Cleveland'];
 
-    let name = this.generateCityName(cityNames[Math.floor(Math.random() * cityNames.length)]);
+    let name = this.generateCityName(this.cityNames[Math.floor(Math.random() * this.cityNames.length)]);
     let randomStructure = '📍';
 
-    if (this.cells[randomRow][randomCol].value === this.land && randomCol <= 85 && this.checkNeighbors(randomRow, randomCol)) {
-      this.ctx.fillStyle = 'black';
+    if (this.cells[randomRow][randomCol].value === this.land && randomCol <= 85 && randomRow > 10 && this.checkNeighbors(randomRow, randomCol)) {
+      this.ctx.fillStyle = this.textColor;
       this.ctx.font = `bold ${citySizes[Math.floor(Math.random() * citySizes.length)]} ${this.font}`;
+      this.ctx.textAlign = "start";
       this.ctx.fillText(`${randomStructure}${name}`, (this.cells[randomRow][randomCol].y) * this.length, (this.cells[randomRow][randomCol].x) * this.length);
       this.updateCell(randomRow, randomCol, this.structure);
     }
     else {
-      this.addLandStructure();
+      this.addCity();
     }
   }
 
@@ -252,18 +299,17 @@ export class AppComponent {
     let randomRow = Math.floor(Math.random() * this.rowLength);
     let randomCol = Math.floor(Math.random() * this.colLength);
 
-    let natural = ['🌵', '🌴']; // for desert
-    // let natural = ['🌲', '🌳']; // for forest
+    // let natural = ['🌵', '🌴']; // for desert
+    let natural = ['🌲', '🌳']; // for forest
     // let natural = ['🗻']; // for snow
-    // let natural = ['🌋', '']; // for hell
+    // let natural = ['🌋']; // for hell
     // let natural = ['🌸', '🌺', '🌼', '🍄', '🌲', '🌳'];
 
-    let randomNum = Math.floor(Math.random() * natural.length);
-    let randomStructure = natural[randomNum];
+    let randomStructure = this.naturalStructures[Math.floor(Math.random() * this.naturalStructures.length)];
 
-    if (this.cells[randomRow][randomCol].value === this.land) {
+    if (this.cells[randomRow][randomCol].value === this.land && randomCol <= 145 && randomRow > 5) {
       this.ctx.fillStyle = 'black';
-      this.ctx.font = '18px Ariel';
+      this.ctx.font = `${this.structureSize} Ariel`;
       this.ctx.fillText(randomStructure, (this.cells[randomRow][randomCol].y) * this.length, (this.cells[randomRow][randomCol].x) * this.length);
       this.updateCell(randomRow, randomCol, this.structure);
     }
@@ -330,6 +376,14 @@ export class AppComponent {
       }
     }
     return generatedName;
+  }
+
+  generateRealmTitle(realm: string) {
+    let adjective = this.adjectives[Math.floor(Math.random() * this.adjectives.length)];
+    let landSyn = this.landSynonyms[Math.floor(Math.random() * this.landSynonyms.length)];
+
+    let result = `The ${adjective} ${landSyn} of "${realm}"`;
+    return result;
   }
 
   checkNeighbors(x: number, y: number) {
