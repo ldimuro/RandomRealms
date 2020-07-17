@@ -1,0 +1,58 @@
+{
+    "cityNums": 10,
+    "landStructureNum": 50,
+    "font": "Optima",
+    "oceanSeeds": 4,
+    "aliveRate": 3,
+    "respawnMin": 6,
+    "cycleNum": 100,
+    "delayNum": 1,
+    "terrain": {
+        "forest": {
+            "water": "#33D6FF",
+            "shades": {
+                "shade1": "#00BC00",
+                "shade2": "#00CC00",
+                "shade3": "#00DC00"
+            },
+            "naturalStructures": ["🌸", "🌺", "🌼", "🍄", "🌲", "🌳"],
+            "structureSize": "18px",
+            "textColor": "black"
+        },
+        "desert": {
+            "water": "#33D6FF",
+            "shades": {
+                "shade1": "#FFE680",
+                "shade2": "#FFEB99",
+                "shade3": "#FFF0B3"
+            },
+            "naturalStructures": ["🌵", "🌴"],
+            "structureSize": "18px",
+            "textColor": "black"
+        },
+        "snow": {
+            "water": "#33D6FF",
+            "shades": {
+                "shade1": "#FFFFFF",
+                "shade2": "#F2F2F2",
+                "shade3": "#E6E6E6"
+            },
+            "naturalStructures": ["🗻"],
+            "structureSize": "36px",
+            "textColor": "black"
+        },
+        "hell": {
+            "water": "#FF6600",
+            "shades": {
+                "shade1": "#404040",
+                "shade2": "#4D4D4D",
+                "shade3": "#595959"
+            },
+            "naturalStructures": ["🌋"],
+            "structureSize": "30px",
+            "textColor": "white"
+        }
+
+    }
+
+}

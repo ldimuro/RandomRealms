@@ -21,7 +21,7 @@ export class AppComponent {
   - "The dark realm of Fézöda"
   - "The scorching lands of Led Ödyeânc"
 
-  all = 'mystic', 'vast', 'remote', 'hidden', 'secret', 'arcane'
+  all = 'mystic', 'vast', 'remote', 'hidden', 'secret', 'arcane', 'forgotten'
   forest = 'enchanted', 'lush', 'rich', 'thriving', 'idyllic', 'heavenly', 
   desert = 'scorching', 'lonely', 'barren', 'boiling', 'sweltering', 'dusty'
   snow = 'frozen', 'frigid', 'polar', 'icy', 'snowy', 'glacial'
@@ -31,29 +31,30 @@ export class AppComponent {
 
   */
 
+  // Configurable Variables
+  cityNums = 10;
+  landStructureNums = 50;
+  font = 'Optima';
+  oceanSeeds = 3;
+  rate = 3;
+  respawnMin = 6;
+  cycleNums = 100;
+  delayNum = 1;
+
+  // Hardcoded Variable
   @ViewChild('canvas', { static: true })
   canvas: ElementRef<HTMLCanvasElement>;
   ctx: CanvasRenderingContext2D;
   grid = [];
   cells = [];
-
   length = 5;
   rowLength = 100 // 45
   colLength = 100; // 80
-  cityNums = 10;
-  structureNums = 50;
-  font = 'Optima';
-  canvasDim = this.rowLength * length;
-
   water = '0';
   land = '1';
   structure = '@';
-
   cycle = 0;
-  rate = 3;
-  respawnMin = 6;
-  cycleNums = 100;
-  delayNum = 1;
+  disableRandomize = false;
 
   ngOnInit() {
     this.ctx = this.canvas.nativeElement.getContext('2d');
@@ -61,18 +62,23 @@ export class AppComponent {
     this.reset();
   }
 
-  randomize() {
-    for (let i = 0; i < 5; i++) {
-      this.start();
+  async randomize() {
+    this.disableRandomize = true;
+    this.reset();
+
+    for (let i = 0; i < 4; i++) {
+      await this.start();
+    }
+
+    for (let k = 0; k < this.landStructureNums; k++) {
+      await this.addNaturalFeature();
     }
 
     for (let j = 0; j < this.cityNums; j++) {
-      this.addLandStructure
+      await this.addLandStructure();
     }
 
-    for (let k = 0; k < this.structureNums; k++) {
-      this.addNaturalFeature();
-    }
+    this.disableRandomize = false;
   }
 
   async start() {
@@ -92,30 +98,6 @@ export class AppComponent {
 
       this.renderGrid();
     }
-
-
-    // THIS IS CORRECT
-    // let grid = '';
-    // for (let x = 0; x < this.rowLength; x++) {
-    //   for (let y = 0; y < this.colLength; y++) {
-    //     // console.log(this.grid[x][y]);
-    //     grid += this.grid[x][y];
-    //   }
-    //   // console.log('\n');
-    //   grid += '\n';
-    // }
-    // console.log(grid);
-
-    // let asd = '';
-    // for (let x = 0; x < this.rowLength; x++) {
-    //   for (let y = 0; y < this.colLength; y++) {
-    //     // console.log(this.grid[x][y]);
-    //     asd += this.cells[x][y].value;
-    //   }
-    //   // console.log('\n');
-    //   asd += '\n';
-    // }
-    // console.log(asd);
   }
 
   reset() {
@@ -142,10 +124,6 @@ export class AppComponent {
         let mars = ['#ff8000', '#ff8c1a', '#ff9933'];
         let hell = ['#404040', '#4d4d4d', '#595959'];
 
-
-        // let texture = ['#00cc00', '#00e600', '#00ff00'];
-        // this.ctx.fillStyle = '#008000';
-
         this.ctx.fillStyle = desert[Math.floor(Math.random() * forest.length)];
 
         this.ctx.clearRect(j * this.length, i * this.length, this.length, this.length)
@@ -153,7 +131,7 @@ export class AppComponent {
       }
     }
 
-    this.randomOceans();
+    this.randomOceans(this.oceanSeeds);
 
     this.renderGrid();
   }
@@ -286,7 +264,7 @@ export class AppComponent {
     if (this.cells[randomRow][randomCol].value === this.land) {
       this.ctx.fillStyle = 'black';
       this.ctx.font = '18px Ariel';
-      this.ctx.fillText(randomStructure, (this.cells[randomRow][randomCol].x) * this.length, (this.cells[randomRow][randomCol].y) * this.length);
+      this.ctx.fillText(randomStructure, (this.cells[randomRow][randomCol].y) * this.length, (this.cells[randomRow][randomCol].x) * this.length);
       this.updateCell(randomRow, randomCol, this.structure);
     }
     else {
@@ -364,9 +342,9 @@ export class AppComponent {
     return true;
   }
 
-  randomOceans() {
+  randomOceans(loops: number) {
     try {
-      for (let i = 0; i < 6; i++) {
+      for (let i = 0; i < loops; i++) {
         let randomX = Math.floor(Math.random() * this.rowLength);
         let randomY = Math.floor(Math.random() * this.colLength);
 
@@ -380,7 +358,7 @@ export class AppComponent {
       }
     }
     catch (ex) {
-      this.randomOceans();
+      this.randomOceans(loops);
     }
   }
 
