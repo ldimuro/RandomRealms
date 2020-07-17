@@ -10,32 +10,6 @@ import * as config from './config.json';
 export class AppComponent {
   title = 'map-generator';
 
-  /*
-  ********************************************************
-                      STRANGE LANDS
-  ********************************************************
-
-  "The [insert adjective] [synonym for 'land'] of [name]"
-
-  Examples:
-  - "The enchanted kingdom of Duzâ"
-  - "The dark realm of Fézöda"
-  - "The scorching lands of Led Ödyeânc"
-
-  - mostly water = 'scattered islands', 'nautical'
-  - mostly land = 'plains', 'steppes', 'prairies'
-  - mostly lava = 'volcanic fields'
-
-  all = 'mystic', 'vast', 'remote', 'hidden', 'secret', 'arcane', 'forgotten'
-  forest = 'enchanted', 'lush', 'rich', 'thriving', 'idyllic', 'heavenly', 
-  desert = 'scorching', 'lonely', 'barren', 'boiling', 'sweltering', 'dusty'
-  snow = 'frozen', 'frigid', 'polar', 'icy', 'snowy', 'glacial'
-  hell = 'desolated', 'grim', 'stark', 'noxious', 'dark', 'dreary', 'sunless'
-
-  Synonymns for 'LAND': lands, realm, country, kingdom, nation, empire, territory, commonwealth, republic
-
-  */
-
   // Configurable Variables
   cityNums;
   landStructureNums;
@@ -72,7 +46,6 @@ export class AppComponent {
   disableRandomize = false;
   realmName = '';
   realmTitle = '';
-  // allAdjectives = ['mystic', 'vast', 'remote', 'hidden', 'secret', 'arcane', 'forgotten'];
 
   ngOnInit() {
     this.ctx = this.canvas.nativeElement.getContext('2d');
@@ -136,11 +109,9 @@ export class AppComponent {
       await this.traverseCells();
 
       if (i === 0) {
-        // this.rate = 2;
         this.respawnMin = 5;
       }
       if (i === 1) {
-        // this.rate = 3;
         this.respawnMin = 6;
       }
 
@@ -166,14 +137,6 @@ export class AppComponent {
         this.grid[i][j] = this.land;
         this.cells[i][j] = obj;
 
-        // this.ctx.fillStyle = 'white';
-
-        let forest = ['#00BC00', '#00cc00', '#00DC00'];
-        let desert = ['#ffe680', '#ffeb99', '#fff0b3'];
-        let snow = ['#ffffff', '#f2f2f2', '#e6e6e6'];
-        let mars = ['#ff8000', '#ff8c1a', '#ff9933'];
-        let hell = ['#404040', '#4d4d4d', '#595959'];
-
         this.ctx.fillStyle = this.shades[Math.floor(Math.random() * this.shades.length)];
 
         this.ctx.clearRect(j * this.length, i * this.length, this.length, this.length)
@@ -193,13 +156,7 @@ export class AppComponent {
 
         if (this.cells[i][j].value !== this.land) {
           if (this.cells[i][j].value === this.water) {
-            // this.ctx.fillStyle = '#6666ff';
-            // this.ctx.fillStyle = '#66c2ff';
-            // this.ctx.fillStyle = '#0099ff';
-
             this.ctx.fillStyle = this.waterColor;
-
-            // this.ctx.fillStyle = '#ff6600';
           }
 
           this.ctx.clearRect(j * this.length, i * this.length, this.length, this.length);
@@ -286,7 +243,6 @@ export class AppComponent {
     let randomStructure = waterStructures[randomNum];
 
     if (this.cells[randomRow][randomCol].value !== this.land) {
-      this.ctx.fillStyle = 'black';
       this.ctx.font = "16px Ariel";
       this.ctx.fillText(`${randomStructure}`, (this.cells[randomRow][randomCol].y) * this.length, (this.cells[randomRow][randomCol].x) * this.length);
     }
@@ -299,16 +255,9 @@ export class AppComponent {
     let randomRow = Math.floor(Math.random() * this.rowLength);
     let randomCol = Math.floor(Math.random() * this.colLength);
 
-    // let natural = ['🌵', '🌴']; // for desert
-    let natural = ['🌲', '🌳']; // for forest
-    // let natural = ['🗻']; // for snow
-    // let natural = ['🌋']; // for hell
-    // let natural = ['🌸', '🌺', '🌼', '🍄', '🌲', '🌳'];
-
     let randomStructure = this.naturalStructures[Math.floor(Math.random() * this.naturalStructures.length)];
 
     if (this.cells[randomRow][randomCol].value === this.land && randomCol <= 145 && randomRow > 5) {
-      this.ctx.fillStyle = 'black';
       this.ctx.font = `${this.structureSize} Ariel`;
       this.ctx.fillText(randomStructure, (this.cells[randomRow][randomCol].y) * this.length, (this.cells[randomRow][randomCol].x) * this.length);
       this.updateCell(randomRow, randomCol, this.structure);
@@ -329,36 +278,41 @@ export class AppComponent {
     let generatedName = '';
     for (let i of city) {
       if (vowels.includes(i.toLowerCase())) {
-        switch (i) {
+        switch(i.toLowerCase()) {
           case 'a':
-            generatedName += specialVowelsA[Math.floor(Math.random() * specialVowelsA.length)];
-            break;
-          case 'A':
-            generatedName += specialVowelsA[Math.floor(Math.random() * specialVowelsA.length)].toUpperCase();
+            let randA = specialVowelsA[Math.floor(Math.random() * specialVowelsA.length)];
+            if (i === i.toUpperCase()) {
+              randA = randA.toUpperCase()
+            }
+            generatedName += randA;
             break;
           case 'e':
-            generatedName += specialVowelsE[Math.floor(Math.random() * specialVowelsE.length)];
-            break;
-          case 'E':
-            generatedName += specialVowelsE[Math.floor(Math.random() * specialVowelsE.length)].toUpperCase();
+            let randE = specialVowelsE[Math.floor(Math.random() * specialVowelsE.length)];
+            if (i === i.toUpperCase()) {
+              randE = randE.toUpperCase()
+            }
+            generatedName += randE;
             break;
           case 'i':
-            generatedName += specialVowelsI[Math.floor(Math.random() * specialVowelsI.length)];
-            break;
-          case 'I':
-            generatedName += specialVowelsI[Math.floor(Math.random() * specialVowelsI.length)].toUpperCase();
+            let randI = specialVowelsI[Math.floor(Math.random() * specialVowelsI.length)];
+            if (i === i.toUpperCase()) {
+              randI = randI.toUpperCase()
+            }
+            generatedName += randI;
             break;
           case 'o':
-            generatedName += specialVowelsO[Math.floor(Math.random() * specialVowelsO.length)];
-            break;
-          case 'O':
-            generatedName += specialVowelsO[Math.floor(Math.random() * specialVowelsO.length)].toUpperCase();
+            let randO = specialVowelsO[Math.floor(Math.random() * specialVowelsO.length)];
+            if (i === i.toUpperCase()) {
+              randO = randO.toUpperCase()
+            }
+            generatedName += randO;
             break;
           case 'u':
-            generatedName += specialVowelsU[Math.floor(Math.random() * specialVowelsU.length)];
-            break;
-          case 'U':
-            generatedName += specialVowelsU[Math.floor(Math.random() * specialVowelsU.length)].toUpperCase();
+            let randU = specialVowelsU[Math.floor(Math.random() * specialVowelsU.length)];
+            if (i === i.toUpperCase()) {
+              randU = randU.toUpperCase()
+            }
+            generatedName += randU;
             break;
         }
       }
@@ -420,7 +374,7 @@ export class AppComponent {
     let canvas = document.getElementById("canvas") as HTMLCanvasElement;
     let image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
     let link = document.createElement('a');
-    link.download = "generated_map.png";
+    link.download = `${this.realmName}.png`;
     link.href = image;
     link.click();
   }

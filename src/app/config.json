@@ -70,10 +70,6 @@
                 "#00DC00"
             ],
             "naturalStructures": [
-                "🌸",
-                "🌺",
-                "🌼",
-                "🍄",
                 "🌲",
                 "🌳"
             ],
@@ -86,7 +82,7 @@
                 "heavenly"
             ],
             "structureSize": "18px",
-            "numOfStructure": 50,
+            "numOfStructure": 60,
             "textColor": "black"
         },
         "desert": {
