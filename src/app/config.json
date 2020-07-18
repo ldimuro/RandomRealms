@@ -2,7 +2,7 @@
     "cityNums": 10,
     "landStructureNum": 50,
     "font": "Optima",
-    "oceanSeeds": 4,
+    "oceanSeeds": 5,
     "aliveRate": 3,
     "respawnMin": 6,
     "cycleNum": 100,
@@ -39,7 +39,8 @@
         "Las Vegas",
         "Yuma",
         "Atlanta",
-        "Cleveland"
+        "Cleveland",
+        "Arizona"
     ],
     "landSynonyms": [
         "lands",
@@ -63,15 +64,43 @@
     ],
     "terrain": {
         "forest": {
-            "water": "#33D6FF",
+            "water": "#1a75ff",
             "shades": [
-                "#00BC00",
-                "#00CC00",
-                "#00DC00"
+                "#00b300",
+                "#00bc00",
+                "#00cc00"
             ],
             "naturalStructures": [
                 "🌲",
                 "🌳"
+            ],
+            "landCreatures": [
+                "🦕",
+                "🐝",
+                "🦌",
+                "🐅",
+                "🦍",
+                "🐐",
+                "🐖",
+                "🐇",
+                "🐏",
+                "🦨",
+                "🦔",
+                "🐄"
+            ],
+            "oceanCreatures": [
+                "🦢",
+                "🐠",
+                "🐬",
+                "🐋",
+                "🦈",
+                "🐡",
+                "🐳",
+                "🦀",
+                "🦞",
+                "🦑",
+                "🐙",
+                "🐟"
             ],
             "adjectives": [
                 "enchanted",
@@ -82,7 +111,10 @@
                 "heavenly"
             ],
             "structureSize": "18px",
+            "landCreatureSize": "28px",
             "numOfStructure": 60,
+            "numOfLandCreatures": 4,
+            "numOfOceanCreatures": 4,
             "textColor": "black"
         },
         "desert": {
@@ -96,6 +128,31 @@
                 "🌵",
                 "🌴"
             ],
+            "landCreatures": [
+                "🦂",
+                "🐍",
+                "🦎",
+                "🐫",
+                "🦒",
+                "🐘",
+                "🦏",
+                "🦘",
+                "🦓"
+            ],
+            "oceanCreatures": [
+                "🐊",
+                "🐠",
+                "🐬",
+                "🐋",
+                "🦈",
+                "🐡",
+                "🐳",
+                "🦀",
+                "🦞",
+                "🦑",
+                "🐙",
+                "🐟"
+            ],
             "adjectives": [
                 "scorching",
                 "lonely",
@@ -105,7 +162,10 @@
                 "dusty"
             ],
             "structureSize": "18px",
+            "landCreatureSize": "28px",
             "numOfStructure": 50,
+            "numOfLandCreatures": 4,
+            "numOfOceanCreatures": 4,
             "textColor": "black"
         },
         "snow": {
@@ -118,6 +178,17 @@
             "naturalStructures": [
                 "🗻"
             ],
+            "landCreatures": [
+                "🐧"
+            ],
+            "oceanCreatures": [
+                "🐳",
+                "🦀",
+                "🦞",
+                "🦑",
+                "🐙",
+                "🐟"
+            ],
             "adjectives": [
                 "frozen",
                 "frigid",
@@ -127,7 +198,10 @@
                 "glacial"
             ],
             "structureSize": "36px",
+            "landCreatureSize": "24px",
             "numOfStructure": 20,
+            "numOfLandCreatures": 4,
+            "numOfOceanCreatures": 4,
             "textColor": "black"
         },
         "hell": {
@@ -140,6 +214,11 @@
             "naturalStructures": [
                 "🌋"
             ],
+            "landCreatures" : [
+                "👹",
+                "👺"
+            ],
+            "oceanCreatures": [""],
             "adjectives": [
                 "desolated",
                 "grim",
@@ -150,7 +229,10 @@
                 "sunless"
             ],
             "structureSize": "30px",
+            "landCreatureSize": "28px",
             "numOfStructure": 20,
+            "numOfLandCreatures": 4,
+            "numOfOceanCreatures": 4,
             "textColor": "white"
         }
     }

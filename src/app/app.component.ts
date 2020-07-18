@@ -12,7 +12,6 @@ export class AppComponent {
 
   // Configurable Variables
   cityNums;
-  landStructureNums;
   font;
   oceanSeeds;
   rate;
@@ -22,7 +21,13 @@ export class AppComponent {
   waterColor;
   shades = [];
   naturalStructures = [];
+  landCreatures = [];
+  oceanCreatures = [];
   structureSize;
+  landCreatureSize;
+  landStructureNums;
+  landCreaturesNums;
+  oceanCreaturesNums;
   textColor;
   cityNames = [];
   landSynonyms = [];
@@ -65,6 +70,21 @@ export class AppComponent {
     this.randomize();
   }
 
+  getConfigData(terrain: string) {
+    this.waterColor = config['default']['terrain'][terrain]['water'];
+    this.shades = config['default']['terrain'][terrain]['shades'];
+    this.naturalStructures = config['default']['terrain'][terrain]['naturalStructures'];
+    this.structureSize = config['default']['terrain'][terrain]['structureSize'];
+    this.landStructureNums = config['default']['terrain'][terrain]['numOfStructure'];
+    this.landCreatures = config['default']['terrain'][terrain]['landCreatures'];
+    this.oceanCreatures = config['default']['terrain'][terrain]['oceanCreatures'];
+    this.landCreaturesNums = config['default']['terrain'][terrain]['numOfLandCreatures'];
+    this.oceanCreaturesNums = config['default']['terrain'][terrain]['numOfOceanCreatures'];
+    this.textColor = config['default']['terrain'][terrain]['textColor'];
+    this.adjectives = config['default']['terrain'][terrain]['adjectives'].concat(this.allAdjectives);
+    this.landCreatureSize = config['default']['terrain'][terrain]['landCreatureSize'];
+  }
+
   async randomize() {
     this.disableRandomize = true;
 
@@ -85,21 +105,19 @@ export class AppComponent {
       await this.addNaturalFeature();
     }
 
+    for (let l = 0; l < this.landCreaturesNums; l++) {
+      await this.addLandCreatures();
+    }
+
+    for (let m = 0; m < this.oceanCreaturesNums; m++) {
+      await this.addOceanCreatures();
+    }
+
     for (let j = 0; j < this.cityNums; j++) {
       await this.addCity();
     }
 
     this.disableRandomize = false;
-  }
-
-  getConfigData(terrain: string) {
-    this.waterColor = config['default']['terrain'][terrain]['water'];
-    this.shades = config['default']['terrain'][terrain]['shades'];
-    this.naturalStructures = config['default']['terrain'][terrain]['naturalStructures'];
-    this.structureSize = config['default']['terrain'][terrain]['structureSize'];
-    this.landStructureNums = config['default']['terrain'][terrain]['numOfStructure'];
-    this.textColor = config['default']['terrain'][terrain]['textColor'];
-    this.adjectives = config['default']['terrain'][terrain]['adjectives'].concat(this.allAdjectives);
   }
 
   async start() {
@@ -216,7 +234,7 @@ export class AppComponent {
     let randomRow = Math.floor(Math.random() * this.rowLength);
     let randomCol = Math.floor(Math.random() * this.colLength);
 
-    let citySizes = ['16px'];
+    let citySizes = ['13px', '16px', '20px'];
 
     let name = this.generateCityName(this.cityNames[Math.floor(Math.random() * this.cityNames.length)]);
     let randomStructure = '📍';
@@ -260,10 +278,42 @@ export class AppComponent {
     if (this.cells[randomRow][randomCol].value === this.land && randomCol <= 145 && randomRow > 5) {
       this.ctx.font = `${this.structureSize} Ariel`;
       this.ctx.fillText(randomStructure, (this.cells[randomRow][randomCol].y) * this.length, (this.cells[randomRow][randomCol].x) * this.length);
-      this.updateCell(randomRow, randomCol, this.structure);
+      this.updateCell(randomRow, randomCol, randomStructure);
     }
     else {
       this.addNaturalFeature();
+    }
+  }
+
+  addLandCreatures() {
+    let randomRow = Math.floor(Math.random() * this.rowLength);
+    let randomCol = Math.floor(Math.random() * this.colLength);
+
+    let randomStructure = this.landCreatures[Math.floor(Math.random() * this.landCreatures.length)];
+
+    if (this.cells[randomRow][randomCol].value === this.land && randomCol <= 145 && randomRow > 5) {
+      this.ctx.font = `${this.landCreatureSize} Ariel`;
+      this.ctx.fillText(randomStructure, (this.cells[randomRow][randomCol].y) * this.length, (this.cells[randomRow][randomCol].x) * this.length);
+      this.updateCell(randomRow, randomCol, randomStructure);
+    }
+    else {
+      this.addLandCreatures();
+    }
+  }
+
+  addOceanCreatures() {
+    let randomRow = Math.floor(Math.random() * this.rowLength);
+    let randomCol = Math.floor(Math.random() * this.colLength);
+
+    let randomStructure = this.oceanCreatures[Math.floor(Math.random() * this.oceanCreatures.length)];
+
+    if (this.cells[randomRow][randomCol].value === this.water && randomCol <= 145 && randomRow > 5 && this.landCreaturesNums > 0) {
+      this.ctx.font = `${this.landCreatureSize} Ariel`;
+      this.ctx.fillText(randomStructure, (this.cells[randomRow][randomCol].y) * this.length, (this.cells[randomRow][randomCol].x) * this.length);
+      this.updateCell(randomRow, randomCol, randomStructure);
+    }
+    else {
+      this.addOceanCreatures();
     }
   }
 
@@ -278,7 +328,7 @@ export class AppComponent {
     let generatedName = '';
     for (let i of city) {
       if (vowels.includes(i.toLowerCase())) {
-        switch(i.toLowerCase()) {
+        switch (i.toLowerCase()) {
           case 'a':
             let randA = specialVowelsA[Math.floor(Math.random() * specialVowelsA.length)];
             if (i === i.toUpperCase()) {
