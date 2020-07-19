@@ -47,6 +47,7 @@ export class AppComponent {
   water = '0';
   land = '1';
   structure = '@';
+  city = '#';
   cycle = 0;
   disableRandomize = false;
   realmName = '';
@@ -118,6 +119,15 @@ export class AppComponent {
     }
 
     this.disableRandomize = false;
+
+    let str = ''
+    for (let x = 0; x < this.rowLength; x++) {
+      for (let y = 0; y < this.colLength; y++) {
+        str += this.grid[x][y];
+      }
+      str += '\n';
+    }
+    console.log(str);
   }
 
   async start() {
@@ -208,9 +218,11 @@ export class AppComponent {
 
         if ((alive === this.rate) && randomNum > 0.5) {
           this.updateCell(this.cells[l][m].x, this.cells[l][m].y, this.water);
+          this.grid[l][m] = this.water;
         }
         else if (alive >= this.respawnMin) {
           this.updateCell(this.cells[l][m].x, this.cells[l][m].y, this.water);
+          this.grid[l][m] = this.water;
         }
       }
     }
@@ -244,6 +256,7 @@ export class AppComponent {
       this.ctx.font = `bold ${citySizes[Math.floor(Math.random() * citySizes.length)]} ${this.font}`;
       this.ctx.textAlign = "start";
       this.ctx.fillText(`${randomStructure}${name}`, (this.cells[randomRow][randomCol].y) * this.length, (this.cells[randomRow][randomCol].x) * this.length);
+      this.grid[randomRow][randomCol] = this.city;
       this.updateCell(randomRow, randomCol, this.structure);
     }
     else {
@@ -263,6 +276,8 @@ export class AppComponent {
     if (this.cells[randomRow][randomCol].value !== this.land) {
       this.ctx.font = "16px Ariel";
       this.ctx.fillText(`${randomStructure}`, (this.cells[randomRow][randomCol].y) * this.length, (this.cells[randomRow][randomCol].x) * this.length);
+      this.grid[randomRow][randomCol] = this.structure;
+      this.updateCell(randomRow, randomCol, randomStructure);
     }
     else {
       this.addWaterStructure();
@@ -279,6 +294,7 @@ export class AppComponent {
       this.ctx.font = `${this.structureSize} Ariel`;
       this.ctx.fillText(randomStructure, (this.cells[randomRow][randomCol].y) * this.length, (this.cells[randomRow][randomCol].x) * this.length);
       this.updateCell(randomRow, randomCol, randomStructure);
+      this.grid[randomRow][randomCol] = this.structure;
     }
     else {
       this.addNaturalFeature();
@@ -295,6 +311,7 @@ export class AppComponent {
       this.ctx.font = `${this.landCreatureSize} Ariel`;
       this.ctx.fillText(randomStructure, (this.cells[randomRow][randomCol].y) * this.length, (this.cells[randomRow][randomCol].x) * this.length);
       this.updateCell(randomRow, randomCol, randomStructure);
+      this.grid[randomRow][randomCol] = this.structure;
     }
     else {
       this.addLandCreatures();
@@ -311,6 +328,7 @@ export class AppComponent {
       this.ctx.font = `${this.landCreatureSize} Ariel`;
       this.ctx.fillText(randomStructure, (this.cells[randomRow][randomCol].y) * this.length, (this.cells[randomRow][randomCol].x) * this.length);
       this.updateCell(randomRow, randomCol, randomStructure);
+      this.grid[randomRow][randomCol] = this.structure;
     }
     else {
       this.addOceanCreatures();
@@ -424,7 +442,7 @@ export class AppComponent {
     let canvas = document.getElementById("canvas") as HTMLCanvasElement;
     let image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
     let link = document.createElement('a');
-    link.download = `${this.realmName}.png`;
+    link.download = `${this.realmName.toLowerCase()}.png`;
     link.href = image;
     link.click();
   }
