@@ -8,7 +8,7 @@ import * as config from './config.json';
 })
 
 export class AppComponent {
-  title = 'map-generator';
+  title = 'Random Realms';
 
   // Configurable Variables
   cityNums;
@@ -115,19 +115,15 @@ export class AppComponent {
     }
 
     for (let j = 0; j < this.cityNums; j++) {
-      await this.addCity();
+      try {
+        await this.addCity();
+      }
+      catch(ex) {
+        console.log('ERROR: Some cities could not be placed');
+      }
     }
 
     this.disableRandomize = false;
-
-    let str = ''
-    for (let x = 0; x < this.rowLength; x++) {
-      for (let y = 0; y < this.colLength; y++) {
-        str += this.grid[x][y];
-      }
-      str += '\n';
-    }
-    console.log(str);
   }
 
   async start() {
@@ -251,7 +247,7 @@ export class AppComponent {
     let name = this.generateCityName(this.cityNames[Math.floor(Math.random() * this.cityNames.length)]);
     let randomStructure = '📍';
 
-    if (this.cells[randomRow][randomCol].value === this.land && randomCol <= 85 && randomRow > 10 && this.checkNeighbors(randomRow, randomCol)) {
+    if (this.cells[randomRow][randomCol].value === this.land && randomCol <= 125 && randomRow > 10 && this.checkNeighbors(randomRow, randomCol)) {
       this.ctx.fillStyle = this.textColor;
       this.ctx.font = `bold ${citySizes[Math.floor(Math.random() * citySizes.length)]} ${this.font}`;
       this.ctx.textAlign = "start";
@@ -408,15 +404,52 @@ export class AppComponent {
     return result;
   }
 
+  // Make sure objects are not too close to each other
   checkNeighbors(x: number, y: number) {
-    for (let i = -3; i < 10; i++) {
-      for (let j = -3; j < 10; j++) {
+    let lowLimit = -10;
+    let highLimit = 10;
+    let neighbors = 0;
 
+    for (let i = lowLimit; i < highLimit; i++) {
+      for (let j = lowLimit; j < highLimit; j++) {
+        // If coordinate is out-of-bounds
+        if (x+i < 0 || x+i >= this.rowLength || y+j < 0 || y+j >= this.colLength) { /* do nothing */ }
+        else {
+          if (this.grid[x+i][y+j] !== this.land && this.grid[x+i][y+j] !== this.water /*&& this.grid[x+i][y+j] !== this.structure*/) {
+            neighbors++;
+          }
+        }
       }
     }
 
-    return true;
+    if (neighbors > 0) {
+      return false;
+    }
+    else {
+      return true;
+    }
   }
+
+  // detectCoast(x: number, y: number) {
+  //   let neighbors = 0;
+  //   for (let i = -1; i <= 1; i++) {
+  //     for (let j = -1; j <= 1; j++) {
+  //       if (x+i < 0 || x+i >= this.rowLength || y+j < 0 || y+j >= this.colLength) {
+
+  //       }
+  //       else if (this.grid[x+i][y+j] === this.land) {
+  //         neighbors++;
+  //       }
+  //     }
+  //   }
+
+  //   if (neighbors > 0) {
+  //     return true;
+  //   }
+  //   else {
+  //     return false;
+  //   }
+  // }
 
   randomOceans(loops: number) {
     try {

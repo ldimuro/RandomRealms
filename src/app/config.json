@@ -17,26 +17,22 @@
         "Dallas",
         "San Francisco",
         "Denver",
-        "Seattle",
         "Calabasas",
         "Houston",
         "Oakland",
-        "Pittsburgh",
         "Boston",
-        "Memphis",
         "Miami",
         "Orlando",
         "Boulder",
         "Akron",
         "San Jose",
-        "Portland",
         "Tucson",
         "New Orleans",
-        "Detroit",
         "Las Vegas",
         "Yuma",
-        "Atlanta",
-        "Arizona"
+        "Arizona",
+        "Avalon",
+        "Mesa"
     ],
     "landSynonyms": [
         "lands",
@@ -72,7 +68,7 @@
             ],
             "landCreatures": [
                 "🦕",
-                "🐝",
+                "🦉",
                 "🦌",
                 "🐅",
                 "🦍",
@@ -82,7 +78,8 @@
                 "🐏",
                 "🦨",
                 "🦔",
-                "🐄"
+                "🐄",
+                "🦋"
             ],
             "oceanCreatures": [
                 "🦢",
@@ -212,7 +209,11 @@
             ],
             "landCreatures" : [
                 "👹",
-                "👺"
+                "👺",
+                "🦂",
+                "🕷",
+                "🦟",
+                "🦇"
             ],
             "oceanCreatures": [""],
             "adjectives": [
