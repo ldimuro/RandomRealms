@@ -1,5 +1,13 @@
 # Random Realms
 
+An app that repurposes Conway's "Game of Life" cellular automata to randomly generate 2D maps of fictional worlds for Dungeons & Dragons campaigns
+
+<img src="/src/assets/forest_screenshot.png" alt="Forest Screenshot" title="Forest Screenshot" width="600" />
+
+<img src="/src/assets/desert_screenshot.png" alt="Desert Screenshot" title="Desert Screenshot" width="600" />
+
+<img src="/src/assets/ice_screenshot.png" alt="Ice Screenshot" title="Ice Screenshot" width="600" />
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.14.
 
 ## Development server
